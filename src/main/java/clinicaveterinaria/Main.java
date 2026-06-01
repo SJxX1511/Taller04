@@ -1,11 +1,34 @@
 package clinicaveterinaria;
 
-import clinicaveterinaria.model.*;
-import clinicaveterinaria.repository.*;
-import clinicaveterinaria.service.*;
-
-
 import java.time.LocalDate;
+import java.util.List;
+
+import clinicaveterinaria.interfaces.Icaminar;
+import clinicaveterinaria.interfaces.Inadar;
+import clinicaveterinaria.interfaces.Ivolar;
+import clinicaveterinaria.model.Animal;
+import clinicaveterinaria.model.Cita;
+import clinicaveterinaria.model.Factura;
+import clinicaveterinaria.model.Gato;
+import clinicaveterinaria.model.Mascota;
+import clinicaveterinaria.model.Pajaro;
+import clinicaveterinaria.model.Perro;
+import clinicaveterinaria.model.Pez;
+import clinicaveterinaria.model.TipoAnimal;
+import clinicaveterinaria.model.TipoTratamiento;
+import clinicaveterinaria.model.Tratamiento;
+import clinicaveterinaria.model.Veterinario;
+import clinicaveterinaria.repository.BaseDatos;
+import clinicaveterinaria.service.CalculadoraCostoTratamiento;
+import clinicaveterinaria.service.Clinica;
+import clinicaveterinaria.service.DiagnosticoService;
+import clinicaveterinaria.service.FacturacionService;
+import clinicaveterinaria.service.MascotaService;
+import clinicaveterinaria.service.ReporteService;
+import clinicaveterinaria.service.ReservaService;
+import clinicaveterinaria.service.ServicioClinicaCompleto;
+import clinicaveterinaria.service.TratamientoService;
+import clinicaveterinaria.service.VeterinarioCrudService;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,7 +66,8 @@ public class Main {
 
         demostrarViolacionesSinRomperEjecucion(veterinario, mascota, tratamiento);
         new Clinica().agendarConsultaRapida(mascota, veterinario);
-        new ServicioClinicaCompleto(baseDatos).calcularTratamiento(tratamiento);
+        new ServicioClinicaCompleto(baseDatos).calcularTratamiento(tratamiento);    
+        demostrarLSP();
     }
 
     private static void demostrarViolacionesSinRomperEjecucion(Veterinario veterinario, Mascota mascota, Tratamiento tratamiento) {
@@ -51,9 +75,48 @@ public class Main {
         veterinario.diagnosticar(citaDesdeModelo, "Ejemplo de SRP violado desde el modelo.");
         System.out.println(veterinario.crearReporte(citaDesdeModelo));
 
-        Animal pez = new Pez(3, "Nemo");
+        Inadar pez = new Pez(3, "Nemo");
         pez.nadar();
-        System.out.println("El pez heredó caminar() y volar(), aunque no debe usarlos.");
+        System.out.println("LSP corregido: Pez solo expone nadar(), caminar/volar no existen en su tipo.");
+
         System.out.println("Tratamiento OCP violado pero funcional: " + tratamiento.obtenerIndicaciones());
+    }
+
+    private static void demostrarLSP() {
+        System.out.println("\n=== LSP: jerarquía de animales corregida ===");
+
+        Perro  perro  = new Perro(1, "Rex");
+        Gato   gato   = new Gato(2, "Mishi");
+        Pajaro pajaro = new Pajaro(3, "Pico");
+        Pez    pez    = new Pez(4, "Nemo");
+
+
+        System.out.println("-- Animales que caminan --");
+        List<Icaminar> caminadores = List.of(perro, gato, pajaro);
+        for (Icaminar c : caminadores) {
+            c.caminar();   
+        }
+
+        System.out.println("-- Animales que nadan --");
+        List<Inadar> nadadores = List.of(perro, pez);
+        for (Inadar n : nadadores) {
+            n.nadar();
+        }
+
+        System.out.println("-- Animales que vuelan --");
+        List<Ivolar> voladores = List.of(pajaro);
+        for (Ivolar v : voladores) {
+            v.volar();
+        }
+
+        System.out.println("-- Capacidades por paciente --");
+        List<Animal> pacientes = List.of(perro, gato, pajaro, pez);
+        for (Animal a : pacientes) {
+            System.out.print(a.getNombre() + ": ");
+            if (a instanceof Icaminar) System.out.print("[caminar] ");
+            if (a instanceof Inadar)   System.out.print("[nadar] ");
+            if (a instanceof Ivolar)   System.out.print("[volar] ");
+            System.out.println();
+        }
     }
 }
