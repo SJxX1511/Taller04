@@ -1,6 +1,6 @@
 package clinicaveterinaria.model;
 
-public class TratamientoMedicamento implements Tratamientos{
+public class TratamientoMedicamento implements ITratamiento{
     private final double costo;
 
     public TratamientoMedicamento(double costo){
@@ -15,5 +15,15 @@ public class TratamientoMedicamento implements Tratamientos{
     @Override
     public String obtenerIndicaciones() {
         return "Administrar segun receta.";
+    }
+
+    @Override
+    public String prepararSala(){
+        return "Preparar receta y dosis.";
+    }
+
+    @Override
+    public double calcularConImpuestos(){
+        return tratamiento.getCosto() * 1.08;
     }
 }

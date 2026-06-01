@@ -3,7 +3,7 @@ package clinicaveterinaria.model;
 import java.util.Objects;
 
 
-public interface Tratamientos {
+public interface ITratamiento {
 
     public int getId() {
         return id;
