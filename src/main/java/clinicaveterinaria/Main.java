@@ -1,11 +1,27 @@
 package clinicaveterinaria;
 
-import clinicaveterinaria.model.*;
-import clinicaveterinaria.repository.*;
-import clinicaveterinaria.service.*;
-
-
 import java.time.LocalDate;
+
+import clinicaveterinaria.model.Animal;
+import clinicaveterinaria.model.Cita;
+import clinicaveterinaria.model.Factura;
+import clinicaveterinaria.model.Mascota;
+import clinicaveterinaria.model.Pez;
+import clinicaveterinaria.model.TipoAnimal;
+import clinicaveterinaria.model.TipoTratamiento;
+import clinicaveterinaria.model.Tratamiento;
+import clinicaveterinaria.model.Veterinario;
+import clinicaveterinaria.repository.BaseDatos;
+import clinicaveterinaria.service.CalculadoraCostoTratamiento;
+import clinicaveterinaria.service.Clinica;
+import clinicaveterinaria.service.DiagnosticoService;
+import clinicaveterinaria.service.FacturacionService;
+import clinicaveterinaria.service.MascotaService;
+import clinicaveterinaria.service.ReporteService;
+import clinicaveterinaria.service.ReservaService;
+import clinicaveterinaria.service.ServicioClinicaCompleto;
+import clinicaveterinaria.service.TratamientoService;
+import clinicaveterinaria.service.VeterinarioCrudService;
 
 public class Main {
     public static void main(String[] args) {
@@ -41,19 +57,21 @@ public class Main {
         System.out.println("Mascotas de Ana Perez: " + reporteService.generarReporteMascotasPorDueno("Ana Perez").size());
         System.out.println("Ingresos del mes: " + reporteService.calcularIngresosMensual());
 
-        demostrarViolacionesSinRomperEjecucion(veterinario, mascota, tratamiento);
+        demostrarUsoDeServicios(veterinario, mascota, reservaService, diagnosticoService, reporteService);
         new Clinica().agendarConsultaRapida(mascota, veterinario);
         new ServicioClinicaCompleto(baseDatos).calcularTratamiento(tratamiento);
     }
 
-    private static void demostrarViolacionesSinRomperEjecucion(Veterinario veterinario, Mascota mascota, Tratamiento tratamiento) {
-        Cita citaDesdeModelo = veterinario.reservarCita(2, mascota, LocalDate.now().plusDays(1));
-        veterinario.diagnosticar(citaDesdeModelo, "Ejemplo de SRP violado desde el modelo.");
-        System.out.println(veterinario.crearReporte(citaDesdeModelo));
+    private static void demostrarUsoDeServicios(Veterinario veterinario, Mascota mascota,
+                                               ReservaService reservaService,
+                                               DiagnosticoService diagnosticoService,
+                                               ReporteService reporteService) {
+        Cita citaDesdeServicio = reservaService.reservarCita(2, mascota, veterinario, LocalDate.now().plusDays(1));
+        diagnosticoService.diagnosticar(citaDesdeServicio, "Ejemplo de SRP aplicado desde el servicio.");
+        System.out.println(reporteService.generarReporte(citaDesdeServicio));
 
         Animal pez = new Pez(3, "Nemo");
         pez.nadar();
         System.out.println("El pez heredó caminar() y volar(), aunque no debe usarlos.");
-        System.out.println("Tratamiento OCP violado pero funcional: " + tratamiento.obtenerIndicaciones());
     }
 }

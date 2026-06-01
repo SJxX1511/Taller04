@@ -1,9 +1,9 @@
 package clinicaveterinaria.service;
 
+import java.util.List;
+
 import clinicaveterinaria.model.Factura;
 import clinicaveterinaria.repository.BaseDatos;
-
-import java.util.List;
 
 public class FacturaService {
     private final BaseDatos baseDatos;
