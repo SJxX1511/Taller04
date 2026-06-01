@@ -1,7 +1,6 @@
 package clinicaveterinaria.interfaces;
 
 import clinicaveterinaria.model.Mascota;
-import java.util.Optional;
 
 public interface IMascotaService {
 void crearMascota(Mascota mascota);
