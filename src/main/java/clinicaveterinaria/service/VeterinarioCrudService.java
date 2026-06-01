@@ -1,9 +1,9 @@
 package clinicaveterinaria.service;
 
+import java.util.List;
+
 import clinicaveterinaria.model.Veterinario;
 import clinicaveterinaria.repository.BaseDatos;
-
-import java.util.List;
 
 public class VeterinarioCrudService {
     private final BaseDatos baseDatos;
