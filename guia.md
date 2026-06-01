@@ -285,8 +285,14 @@ Checklist de validación:
 Preguntas de discusión:
 
 - ¿Qué problema causa una interfaz gigante en equipos grandes?
+- Pueden generar confusion ya que una interfaz gigante implica que la actualizacion entre usuarios que manejan diferentes segmentos del programa actualicen cada que existen alteraciones en el codigo, conflictos de merge.
+- El uso de metodos que no son necesarios, causando un retorno de null o excepciones.
+
 - ¿Por qué `new DirectoBaseDatos()` dificulta cambiar o probar la clase?
+- Conectara independientemente de la stage en la que se encuentre con la base de datos real.
+
 - ¿Qué dependencia debería conocer el código de alto nivel: interfaz o clase concreta?
+- Abstraccion
 
 ## Checklist de validación general
 
