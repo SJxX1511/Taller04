@@ -13,13 +13,13 @@ public class TratamientoService {
         this.baseDatos = baseDatos;
     }
 
-    public void crearTratamiento(Tratamiento tratamiento) {
+    public void crearTratamiento(ITratamiento tratamiento) {
         baseDatos.getTratamientos().add(tratamiento);
         baseDatos.registrarOperacion("crearTratamiento");
     }
 
-    public Tratamiento obtenerTratamiento(int id) {
-        for (Tratamiento tratamiento : baseDatos.getTratamientos()) {
+    public ITratamiento obtenerTratamiento(int id) {
+        for (ITratamiento tratamiento : baseDatos.getTratamientos()) {
             if (tratamiento.getId() == id) {
                 return tratamiento;
             }
@@ -27,7 +27,7 @@ public class TratamientoService {
         return null;
     }
 
-    public void actualizarTratamiento(Tratamiento tratamiento) {
+    public void actualizarTratamiento(ITratamiento tratamiento) {
         eliminarTratamiento(tratamiento.getId());
         crearTratamiento(tratamiento);
     }
@@ -52,7 +52,7 @@ public class TratamientoService {
         }
     }
 
-    public List<Tratamiento> listarTratamientos() {
+    public List<ITratamiento> listarTratamientos() {
         return baseDatos.getTratamientos();
     }
 }
