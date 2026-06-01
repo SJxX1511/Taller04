@@ -1,7 +1,7 @@
 package clinicaveterinaria.service;
 
 import clinicaveterinaria.model.TipoTratamiento;
-import clinicaveterinaria.model.Tratamiento;
+import clinicaveterinaria.model.ITratamiento;
 import clinicaveterinaria.repository.BaseDatos;
 
 import java.util.List;
@@ -14,13 +14,13 @@ public class TratamientoService {
         this.baseDatos = baseDatos;
     }
 
-    public void crearTratamiento(Tratamiento tratamiento) {
+    public void crearTratamiento(ITratamiento tratamiento) {
         baseDatos.getTratamientos().add(tratamiento);
         baseDatos.registrarOperacion("crearTratamiento");
     }
 
-    public Tratamiento obtenerTratamiento(int id) {
-        for (Tratamiento tratamiento : baseDatos.getTratamientos()) {
+    public ITratamiento obtenerTratamiento(int id) {
+        for (ITratamiento tratamiento : baseDatos.getTratamientos()) {
             if (tratamiento.getId() == id) {
                 return tratamiento;
             }
@@ -28,7 +28,7 @@ public class TratamientoService {
         return null;
     }
 
-    public void actualizarTratamiento(Tratamiento tratamiento) {
+    public void actualizarTratamiento(ITratamiento tratamiento) {
         eliminarTratamiento(tratamiento.getId());
         crearTratamiento(tratamiento);
     }
@@ -38,20 +38,11 @@ public class TratamientoService {
         baseDatos.registrarOperacion("eliminarTratamiento");
     }
 
-    public String prepararSala(Tratamiento tratamiento) {
-        if (tratamiento.getTipo() == TipoTratamiento.VACUNA) {
-            return "Preparar refrigeracion y jeringas.";
-        } else if (tratamiento.getTipo() == TipoTratamiento.CIRUGIA) {
-            return "Preparar quirofano y anestesia.";
-        } else if (tratamiento.getTipo() == TipoTratamiento.MEDICAMENTO) {
-            return "Preparar receta y dosis.";
-        } else if (tratamiento.getTipo() == TipoTratamiento.FISIOTERAPIA) {
-            return "Preparar camilla y bandas elasticas.";
-        }
-        return "Sin preparacion.";
+    public String prepararSala(ITratamientos tratamiento) {
+        return tratamientos.prepararSala();
     }
 
-    public List<Tratamiento> listarTratamientos() {
+    public List<ITratamiento> listarTratamientos() {
         return baseDatos.getTratamientos();
     }
 }
