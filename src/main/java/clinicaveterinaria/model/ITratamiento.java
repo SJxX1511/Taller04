@@ -4,6 +4,15 @@ import java.util.Objects;
 
 
 public interface ITratamiento {
+    private int id;
+    private TipoTratamiento tipo;
+    private String descripcion;
+
+    public ITratamiento(int id, TipoTratamiento tipo, String descripcion) {
+        this.id = id;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+    }
 
     public int getId() {
         return id;
