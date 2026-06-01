@@ -46,6 +46,24 @@ src/main/java/clinicaveterinaria/
 
 - Integrante 1: refactorizar SRP.
 - Integrante 2: refactorizar OCP.
+Checklist de validación:
+| Criterio | Sí/No |
+| --- | --- |
+| El proyecto compila |si|
+| No hay condicional gigante por tipo en la lógica nueva |si|
+| Cada tratamiento conoce su propio costo e indicaciones |si|
+| Agregar un nuevo tratamiento requiere crear una clase, no editar todas |si|
+
+Preguntas de discusión:
+
+- ¿Por qué los condicionales repetidos hacen más caro el cambio?
+por el tiempo y algun tipo de riesgo a errores
+- ¿Qué pasaría si agregamos `Odontologia` como tratamiento?
+Nada estariamos extendiendo osea podriamos agregar sin problemas TratamientoOdontologia
+- ¿Cuándo una interfaz ayuda a extender el sistema?
+que cuando agregues algo debe conectarse de manera que el sistema sepa que tarea le toque hacer
+
+
 - Integrante 3: refactorizar LSP.
 - Integrante 4: refactorizar ISP y DIP.
 
